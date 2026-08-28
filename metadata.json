@@ -1,0 +1,6 @@
+{
+  "name": "Simulador PAES & Admisión Universitaria",
+  "description": "Calculadora PAES, simulador estocástico de admisión universitaria en Chile y comparador multicarrera de 50 métricas clave con datos DEMRE, MiFuturo, SIES y CNA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
