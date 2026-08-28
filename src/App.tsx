@@ -17,6 +17,7 @@ import { CareerComparator } from './components/CareerComparator';
 import { GoalTracker } from './components/GoalTracker';
 import { SimulationHistory } from './components/SimulationHistory';
 import { MethodologyModal } from './components/MethodologyModal';
+import { apiService } from './services/apiService';
 import { Layers, ArrowRight, X, Sparkles } from 'lucide-react';
 
 const INITIAL_SCORES: PaesScores = {
@@ -54,10 +55,14 @@ export default function App() {
     const saved = localStorage.getItem('paes_compared_ids');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const valid = parsed.filter((id) => ACADEMIC_OFFER.some((c) => c.id === id));
+          if (valid.length > 0) return valid.slice(0, 4);
+        }
       } catch (e) {}
     }
-    return ['uch-plan-comun', 'puc-plan-comun', 'uch-medicina', 'puc-medicina'];
+    return ACADEMIC_OFFER.slice(0, 4).map((c) => c.id);
   });
 
   // Modal states
@@ -280,7 +285,7 @@ export default function App() {
   };
 
   // Saved simulations handlers
-  const handleSaveSimulation = (name: string, notes?: string) => {
+  const handleSaveSimulation = async (name: string, notes?: string) => {
     const newSim: SavedSimulation = {
       id: `sim-${Date.now()}`,
       name: name.trim() || `Simulación ${new Date().toLocaleDateString('es-CL')}`,
@@ -293,7 +298,9 @@ export default function App() {
       selectedCareersCount: comparedCareerIds.length,
       notes,
     };
-    setSavedSimulations([newSim, ...savedSimulations]);
+    setSavedSimulations((prev) => [newSim, ...prev]);
+    // Async background sync to REST API
+    apiService.saveSimulation(name, scores, notes, comparedCareerIds.length).catch(() => {});
   };
 
   const handleRestoreSimulation = (sim: SavedSimulation) => {
@@ -302,7 +309,8 @@ export default function App() {
   };
 
   const handleDeleteSimulation = (simId: string) => {
-    setSavedSimulations(savedSimulations.filter((s) => s.id !== simId));
+    setSavedSimulations((prev) => prev.filter((s) => s.id !== simId));
+    apiService.deleteSimulation(simId).catch(() => {});
   };
 
   return (

@@ -96,15 +96,18 @@ export const StochasticDetailModal: React.FC<StochasticDetailModalProps> = ({
   const dynamicSimulation = calculateStochasticAdmission(modifiedScores, career);
 
   // Monte Carlo distribution buckets
-  const minSim = Math.min(...simulation.monteCarloSimulations);
-  const maxSim = Math.max(...simulation.monteCarloSimulations);
+  const sims = simulation.monteCarloSimulations && simulation.monteCarloSimulations.length > 0
+    ? simulation.monteCarloSimulations
+    : [simulation.projectedCutoffNextYear - 15, simulation.projectedCutoffNextYear + 15];
+  const minSim = Math.min(...sims);
+  const maxSim = Math.max(...sims);
   const bucketCount = 12;
   const step = Math.max(1, (maxSim - minSim) / bucketCount);
 
   const buckets = Array.from({ length: bucketCount }, (_, i) => {
     const start = minSim + i * step;
     const end = start + step;
-    const count = simulation.monteCarloSimulations.filter((s) => s >= start && s < end).length;
+    const count = sims.filter((s) => s >= start && s < end).length;
     return {
       label: `${Math.round(start)} - ${Math.round(end)}`,
       center: Math.round((start + end) / 2),
@@ -115,6 +118,8 @@ export const StochasticDetailModal: React.FC<StochasticDetailModalProps> = ({
   });
 
   const maxBucketCount = Math.max(...buckets.map((b) => b.count), 1);
+  const rangeMin = Math.round(simulation.projectedCutoffNextYear - (simulation.historicalStdDev || 10));
+  const rangeMax = Math.round(simulation.projectedCutoffNextYear + (simulation.historicalStdDev || 10));
 
   return (
     <div
@@ -338,7 +343,7 @@ export const StochasticDetailModal: React.FC<StochasticDetailModalProps> = ({
 
                   <div className="text-right text-xs text-[#8C7662] bg-[#FBF9F5] p-2.5 rounded-lg border border-[#EAE3D8]">
                     <div>Corte Estimado 2025: <strong className="text-[#001122]">{simulation.projectedCutoffNextYear} pts</strong></div>
-                    <div>Rango Probable: <strong className="text-[#001122]">{simulation.confidenceInterval[0]} - {simulation.confidenceInterval[1]} pts</strong></div>
+                    <div>Rango Probable: <strong className="text-[#001122]">{rangeMin} - {rangeMax} pts</strong></div>
                   </div>
                 </div>
               </div>
@@ -406,44 +411,44 @@ export const StochasticDetailModal: React.FC<StochasticDetailModalProps> = ({
                     <tbody className="divide-y divide-[#EFEAE1]">
                       <tr>
                         <td className="py-2 px-3 font-semibold text-[#001122]">NEM (Notas Enseñanza Media)</td>
-                        <td className="py-2 px-3 text-center font-bold">{ponderation.nem}%</td>
+                        <td className="py-2 px-3 text-center font-bold">{metrics.ponderacionNEM}%</td>
                         <td className="py-2 px-3 text-center">{baseScores.nemScore} pts</td>
                         <td className="py-2 px-3 text-right font-bold text-[#7C5E45]">
-                          {((baseScores.nemScore * ponderation.nem) / 100).toFixed(2)} pts
+                          {((baseScores.nemScore * metrics.ponderacionNEM) / 100).toFixed(2)} pts
                         </td>
                       </tr>
                       <tr>
                         <td className="py-2 px-3 font-semibold text-[#001122]">Puntaje Ranking</td>
-                        <td className="py-2 px-3 text-center font-bold">{ponderation.ranking}%</td>
+                        <td className="py-2 px-3 text-center font-bold">{metrics.ponderacionRanking}%</td>
                         <td className="py-2 px-3 text-center">{baseScores.ranking} pts</td>
                         <td className="py-2 px-3 text-right font-bold text-[#7C5E45]">
-                          {((baseScores.ranking * ponderation.ranking) / 100).toFixed(2)} pts
+                          {((baseScores.ranking * metrics.ponderacionRanking) / 100).toFixed(2)} pts
                         </td>
                       </tr>
                       <tr>
                         <td className="py-2 px-3 font-semibold text-[#001122]">Comprensión Lectora</td>
-                        <td className="py-2 px-3 text-center font-bold">{ponderation.lectora}%</td>
+                        <td className="py-2 px-3 text-center font-bold">{metrics.ponderacionLectora}%</td>
                         <td className="py-2 px-3 text-center">{baseScores.lectora} pts</td>
                         <td className="py-2 px-3 text-right font-bold text-[#7C5E45]">
-                          {((baseScores.lectora * ponderation.lectora) / 100).toFixed(2)} pts
+                          {((baseScores.lectora * metrics.ponderacionLectora) / 100).toFixed(2)} pts
                         </td>
                       </tr>
                       <tr>
                         <td className="py-2 px-3 font-semibold text-[#001122]">Matemática 1 (M1)</td>
-                        <td className="py-2 px-3 text-center font-bold">{ponderation.matematica1}%</td>
+                        <td className="py-2 px-3 text-center font-bold">{metrics.ponderacionM1}%</td>
                         <td className="py-2 px-3 text-center">{baseScores.m1} pts</td>
                         <td className="py-2 px-3 text-right font-bold text-[#7C5E45]">
-                          {((baseScores.m1 * ponderation.matematica1) / 100).toFixed(2)} pts
+                          {((baseScores.m1 * metrics.ponderacionM1) / 100).toFixed(2)} pts
                         </td>
                       </tr>
-                      {ponderation.matematica2 && ponderation.matematica2 > 0 && (
+                      {metrics.ponderacionM2 > 0 && (
                         <tr>
                           <td className="py-2 px-3 font-semibold text-[#001122]">Matemática 2 (M2)</td>
-                          <td className="py-2 px-3 text-center font-bold">{ponderation.matematica2}%</td>
+                          <td className="py-2 px-3 text-center font-bold">{metrics.ponderacionM2}%</td>
                           <td className="py-2 px-3 text-center">{baseScores.m2 || 'No rendida'}</td>
                           <td className="py-2 px-3 text-right font-bold text-[#7C5E45]">
                             {baseScores.m2
-                              ? ((baseScores.m2 * ponderation.matematica2) / 100).toFixed(2)
+                              ? (((baseScores.m2) * metrics.ponderacionM2) / 100).toFixed(2)
                               : '0.00'}{' '}
                             pts
                           </td>
@@ -451,14 +456,10 @@ export const StochasticDetailModal: React.FC<StochasticDetailModalProps> = ({
                       )}
                       <tr>
                         <td className="py-2 px-3 font-semibold text-[#001122]">
-                          {ponderation.ciencias && ponderation.historia
-                            ? 'Mayor entre Ciencias e Historia'
-                            : ponderation.ciencias
-                            ? 'Ciencias'
-                            : 'Historia'}
+                          Ciencias / Historia
                         </td>
                         <td className="py-2 px-3 text-center font-bold">
-                          {ponderation.ciencias || ponderation.historia}%
+                          {metrics.ponderacionCienciasHistoria}%
                         </td>
                         <td className="py-2 px-3 text-center">
                           {Math.max(baseScores.ciencias || 0, baseScores.historia || 0)} pts
@@ -466,7 +467,7 @@ export const StochasticDetailModal: React.FC<StochasticDetailModalProps> = ({
                         <td className="py-2 px-3 text-right font-bold text-[#7C5E45]">
                           {(
                             (Math.max(baseScores.ciencias || 0, baseScores.historia || 0) *
-                              (ponderation.ciencias || ponderation.historia || 0)) /
+                              metrics.ponderacionCienciasHistoria) /
                             100
                           ).toFixed(2)}{' '}
                           pts
@@ -978,7 +979,7 @@ export const StochasticDetailModal: React.FC<StochasticDetailModalProps> = ({
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-[#EFEAE1] text-[11px] text-[#8C7662] flex items-center justify-between">
-                  <span>Retención 1° a 2° año: <strong className="text-[#001122]">{metrics.retencion1Ano}%</strong></span>
+                  <span>Retención 1° a 2° año: <strong className="text-[#001122]">{metrics.retencion1a2Ano}%</strong></span>
                   <span>Duración Real: <strong className="text-[#001122]">{metrics.duracionRealSemestres} semestres</strong></span>
                 </div>
               </div>

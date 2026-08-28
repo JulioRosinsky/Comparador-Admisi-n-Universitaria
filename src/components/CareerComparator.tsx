@@ -256,7 +256,7 @@ export const CareerComparator: React.FC<CareerComparatorProps> = ({
                       </h4>
                       <p className="text-[10px] text-[#A09588] mt-0.5">{c.universityName}</p>
                       <div className="text-[9.5px] text-[#E6C687] mt-1 flex items-center gap-1">
-                        <MapPin className="w-2.5 h-2.5" /> {c.campusLocation?.name || c.city}
+                        <MapPin className="w-2.5 h-2.5" /> {c.campusLocation?.campusName || c.city}
                       </div>
                     </div>
                   </th>
