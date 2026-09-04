@@ -216,8 +216,10 @@ export default function App() {
         if (filters.sortBy === 'weightedScore') {
           return b.simulation.weightedScore - a.simulation.weightedScore;
         }
-        if (filters.sortBy === 'corte2024') {
-          return b.metrics.corte2024 - a.metrics.corte2024;
+        if (filters.sortBy === 'corte2026' || filters.sortBy === 'corte2024') {
+          const scoreA = a.metrics.corte2026 || a.metrics.corte2024;
+          const scoreB = b.metrics.corte2026 || b.metrics.corte2024;
+          return scoreB - scoreA;
         }
         if (filters.sortBy === 'arancelAsc') {
           return a.metrics.arancelAnualCLP - b.metrics.arancelAnualCLP;

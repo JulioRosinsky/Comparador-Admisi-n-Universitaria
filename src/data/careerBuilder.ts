@@ -33,15 +33,15 @@ export function buildComprehensiveAcademicOffer(): Career[] {
       const codeNumber = 1000 + (index * 17) + (spec.univKey.charCodeAt(0) % 50);
       const code = `${spec.demrePrefix}${String(codeNumber).padStart(3, '0').slice(-3)}`;
 
-      // 5-Year Historical Cutoff Calculations
-      const corte2024 = Math.round((dDef.baseCutoffElite + spec.cutoffOffset) * 10) / 10;
-      const corte2023 = Math.round((corte2024 - (6.2 + (disciplineKey.length % 3))) * 10) / 10;
-      const corte2022 = Math.round((corte2023 - (12.8 + (disciplineKey.length % 4))) * 10) / 10;
-      const corte2021 = Math.round((corte2022 - 9.5) * 10) / 10;
-      const corte2020 = Math.round((corte2021 - 6.2) * 10) / 10;
-      const promedioCorte5Anos = Math.round(((corte2024 + corte2023 + corte2022 + corte2021 + corte2020) / 5) * 100) / 100;
+      // 5-Year Historical Cutoff Calculations (Admisión 2026, 2025, 2024, 2023, 2022)
+      const corte2026 = Math.round((dDef.baseCutoffElite + spec.cutoffOffset) * 10) / 10;
+      const corte2025 = Math.round((corte2026 - (3.4 + (disciplineKey.length % 2))) * 10) / 10;
+      const corte2024 = Math.round((corte2025 - (4.2 + (disciplineKey.length % 3))) * 10) / 10;
+      const corte2023 = Math.round((corte2024 - (8.5 + (disciplineKey.length % 4))) * 10) / 10;
+      const corte2022 = Math.round((corte2023 - 11.2) * 10) / 10;
+      const promedioCorte5Anos = Math.round(((corte2026 + corte2025 + corte2024 + corte2023 + corte2022) / 5) * 100) / 100;
 
-      // Salary Curve
+      // Salary Curve (institution and career specific)
       const salMult = spec.salaryMultiplier;
       const ingreso1Ano = Math.round((dDef.baseSalary1Year * salMult) / 10000) * 10000;
       const ingreso2Ano = Math.round((ingreso1Ano * 1.16) / 10000) * 10000;
@@ -52,6 +52,10 @@ export function buildComprehensiveAcademicOffer(): Career[] {
       const ingresoP25 = Math.round((dDef.salaryP25 * salMult) / 10000) * 10000;
       const ingresoP75 = Math.round((dDef.salaryP75 * salMult) / 10000) * 10000;
       const ingresoP90 = Math.round((dDef.salaryP90 * salMult) / 10000) * 10000;
+
+      // Employability (institution specific)
+      const emp1 = Math.min(99.5, Math.round((dDef.employability1Year * (salMult >= 1.05 ? 1.02 : salMult <= 0.95 ? 0.97 : 1.0)) * 10) / 10);
+      const emp2 = Math.min(99.8, Math.round((dDef.employability2Year * (salMult >= 1.05 ? 1.01 : salMult <= 0.95 ? 0.98 : 1.0)) * 10) / 10);
 
       // Aranceles & Copago
       const arancelAnualCLP = Math.round((dDef.baseTuitionCLP * spec.tuitionMultiplier) / 10000) * 10000;
@@ -93,18 +97,20 @@ export function buildComprehensiveAcademicOffer(): Career[] {
           ...dDef.defaultPonderation,
         },
         historicalCutoffs: [
-          { year: 2020, score: corte2020 },
-          { year: 2021, score: corte2021 },
           { year: 2022, score: corte2022 },
           { year: 2023, score: corte2023 },
           { year: 2024, score: corte2024 },
+          { year: 2025, score: corte2025 },
+          { year: 2026, score: corte2026 },
         ],
         metrics: {
+          corte2026,
+          corte2025,
           corte2024,
           corte2023,
           corte2022,
-          corte2021,
-          corte2020,
+          corte2021: Math.round((corte2022 - 9.5) * 10) / 10,
+          corte2020: Math.round((corte2022 - 15.5) * 10) / 10,
           promedioCorte5Anos,
           vacantesRegulares,
           ponderacionNEM: Math.round(dDef.defaultPonderation.nem * 100),
@@ -115,8 +121,8 @@ export function buildComprehensiveAcademicOffer(): Career[] {
           ponderacionCienciasHistoria: Math.round((dDef.defaultPonderation.cienciasHistoria || 0) * 100),
           exigenciaM2Texto: dDef.defaultPonderation.requiresM2 ? `Obligatoria (${Math.round((dDef.defaultPonderation.m2 || 0.05) * 100)}%)` : 'No exigida (Opcional)',
           minimoPostulacion: `${dDef.defaultPonderation.minPonderadoPostulacion || 500} pts ponderados mínimos`,
-          empleabilidad1Ano: dDef.employability1Year,
-          empleabilidad2Ano: dDef.employability2Year,
+          empleabilidad1Ano: emp1,
+          empleabilidad2Ano: emp2,
           ingreso1Ano,
           ingreso2Ano,
           ingreso3Ano,

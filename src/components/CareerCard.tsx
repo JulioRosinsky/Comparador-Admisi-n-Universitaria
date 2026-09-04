@@ -119,21 +119,21 @@ export const CareerCard: React.FC<CareerCardProps> = ({
 
             <div className="text-right">
               <span className="text-[10px] uppercase tracking-wider font-semibold text-[#8C7662] block">
-                Corte DEMRE 2024
+                Corte Admisión 2026
               </span>
               <div className="flex items-baseline gap-1.5 justify-end">
                 <span className="text-base font-bold text-[#5C4433]">
-                  {metrics.corte2024.toFixed(1)}
+                  {(metrics.corte2026 || metrics.corte2024).toFixed(1)}
                 </span>
                 <span
                   className={`text-[11px] font-black px-2 py-0.5 rounded-full ${
-                    simulation.differenceTo2024Cutoff >= 0
+                    (simulation.differenceTo2026Cutoff ?? simulation.differenceTo2024Cutoff) >= 0
                       ? 'bg-[#E8F5E9] text-[#2E7D32]'
                       : 'bg-[#FFEBEE] text-[#C62828]'
                   }`}
                 >
-                  {simulation.differenceTo2024Cutoff >= 0 ? '+' : ''}
-                  {simulation.differenceTo2024Cutoff.toFixed(1)}
+                  {(simulation.differenceTo2026Cutoff ?? simulation.differenceTo2024Cutoff) >= 0 ? '+' : ''}
+                  {(simulation.differenceTo2026Cutoff ?? simulation.differenceTo2024Cutoff).toFixed(1)}
                 </span>
               </div>
             </div>

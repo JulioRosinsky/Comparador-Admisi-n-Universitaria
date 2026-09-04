@@ -10,7 +10,7 @@ export interface FilterState {
   gratuityOnly: boolean;
   minCnaYears: number;
   planComunOnly: boolean;
-  sortBy: 'probability' | 'weightedScore' | 'corte2024' | 'arancelAsc' | 'empleabilidad' | 'ingreso5';
+  sortBy: 'probability' | 'weightedScore' | 'corte2026' | 'corte2024' | 'arancelAsc' | 'empleabilidad' | 'ingreso5';
   admissionCategory: 'all' | 'SEGURA' | 'COMPETITIVA' | 'RIESGO_ALTO';
 }
 
@@ -100,7 +100,7 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
           >
             <option value="probability">🟢 Mayor Probabilidad de Admisión</option>
             <option value="weightedScore">Puntaje Ponderado Más Alto</option>
-            <option value="corte2024">Puntaje Corte DEMRE 2024</option>
+            <option value="corte2026">Puntaje Corte Admisión 2026</option>
             <option value="arancelAsc">Arancel Más Económico</option>
             <option value="empleabilidad">Mayor Empleabilidad 1° Año</option>
             <option value="ingreso5">Mayor Ingreso al 5° Año</option>

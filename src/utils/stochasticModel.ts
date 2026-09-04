@@ -128,9 +128,9 @@ export function calculateStochasticAdmission(
   const annualDrift = Math.round(slope * 10) / 10;
 
   // Projected next cutoff (bounded drift to avoid runaway values)
-  const lastCutoff2024 = cutoffs[cutoffs.length - 1];
+  const lastCutoff2026 = cutoffs[cutoffs.length - 1];
   const boundedDrift = Math.max(-18, Math.min(22, annualDrift));
-  const projectedCutoffNextYear = Math.round((lastCutoff2024 + boundedDrift) * 10) / 10;
+  const projectedCutoffNextYear = Math.round((lastCutoff2026 + boundedDrift) * 10) / 10;
 
   // Fast Analytical and Monte Carlo approximation
   // Cohort volatility factor
@@ -168,7 +168,7 @@ export function calculateStochasticAdmission(
     categoryLabel = 'Bajo el Corte Histórico / Riesgo Alto';
   }
 
-  const diff2024 = Math.round((weightedScore - lastCutoff2024) * 100) / 100;
+  const diff2026 = Math.round((weightedScore - lastCutoff2026) * 100) / 100;
   const diffProjected = Math.round((weightedScore - projectedCutoffNextYear) * 100) / 100;
 
   // Dynamic recommendation based on empirical statistics
@@ -198,7 +198,8 @@ export function calculateStochasticAdmission(
     probability,
     category,
     categoryLabel,
-    differenceTo2024Cutoff: diff2024,
+    differenceTo2026Cutoff: diff2026,
+    differenceTo2024Cutoff: diff2026,
     differenceToProjectedCutoff: diffProjected,
     monteCarloSimulations,
     percentileInDistribution,

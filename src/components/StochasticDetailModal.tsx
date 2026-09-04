@@ -297,21 +297,21 @@ export const StochasticDetailModal: React.FC<StochasticDetailModalProps> = ({
 
                   <div className="text-left sm:text-right">
                     <span className="text-xs text-[#6B5A4B] font-semibold block mb-0.5">
-                      Corte 2024 (Último Seleccionado):
+                      Corte Admisión 2026 (Último Seleccionado):
                     </span>
                     <div className="flex items-baseline gap-2 sm:justify-end">
                       <span className="text-2xl font-bold text-[#5C4433]">
-                        {metrics.corte2024.toFixed(1)}
+                        {(metrics.corte2026 || metrics.corte2024).toFixed(1)}
                       </span>
                       <span
                         className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                          simulation.differenceTo2024Cutoff >= 0
+                          (simulation.differenceTo2026Cutoff ?? simulation.differenceTo2024Cutoff) >= 0
                             ? 'bg-[#E8F5E9] text-[#2E7D32]'
                             : 'bg-[#FFEBEE] text-[#C62828]'
                         }`}
                       >
-                        {simulation.differenceTo2024Cutoff >= 0 ? '+' : ''}
-                        {simulation.differenceTo2024Cutoff.toFixed(1)} pts
+                        {(simulation.differenceTo2026Cutoff ?? simulation.differenceTo2024Cutoff) >= 0 ? '+' : ''}
+                        {(simulation.differenceTo2026Cutoff ?? simulation.differenceTo2024Cutoff).toFixed(1)} pts
                       </span>
                     </div>
                   </div>

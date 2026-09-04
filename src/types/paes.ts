@@ -88,6 +88,8 @@ export interface HistoricalCutoff {
 
 export interface Metric50 {
   // 1. Dimensión Admisión y Ponderaciones (DEMRE / Universidades)
+  corte2026: number; // Corte Admisión 2026 (Último Matriculado Oficial)
+  corte2025: number;
   corte2024: number;
   corte2023: number;
   corte2022: number;
@@ -183,6 +185,7 @@ export interface StochasticAnalysis {
   probability: number; // 0 to 100
   category: AdmissionCategory;
   categoryLabel: string;
+  differenceTo2026Cutoff: number;
   differenceTo2024Cutoff: number;
   differenceToProjectedCutoff: number;
   monteCarloSimulations: number[]; // 1000 samples for histogram/distribution

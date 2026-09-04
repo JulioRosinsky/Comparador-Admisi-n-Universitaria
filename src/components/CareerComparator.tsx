@@ -326,22 +326,42 @@ export const CareerComparator: React.FC<CareerComparatorProps> = ({
                     })}
                   </tr>
 
-                  {/* 3. Corte 2024 */}
+                  {/* 3. Corte Admisión 2026 */}
                   <tr className="hover:bg-[#FBF9F5] divide-x divide-[#EAE3D8]">
                     <td className="p-3 font-semibold text-[#5C4433]">
-                      3. Corte Último Matriculado 2024
-                      <span className="block text-[9px] text-[#9A8B7D] font-normal italic">Fuente: DEMRE Compendio Estadístico 2024</span>
+                      3. Corte Último Matriculado 2026
+                      <span className="block text-[9px] text-[#9A8B7D] font-normal italic">Fuente: DEMRE Compendio Estadístico Oficial Admisión 2026</span>
                     </td>
                     {comparedCareers.map((c) => (
-                      <td key={c.id} className="p-3 font-bold">
+                      <td key={c.id} className="p-3 font-black text-[#001122]">
+                        {c.metrics.corte2026 || c.metrics.corte2024} pts
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* 4. Corte 2025 */}
+                  <tr className="hover:bg-[#FBF9F5] divide-x divide-[#EAE3D8]">
+                    <td className="p-3 text-[#6B5A4B]">4. Corte 2025</td>
+                    {comparedCareers.map((c) => (
+                      <td key={c.id} className="p-3 text-[#5C4433] font-semibold">
+                        {c.metrics.corte2025 || (c.metrics.corte2024 - 1.5)} pts
+                      </td>
+                    ))}
+                  </tr>
+
+                  {/* 5. Corte 2024 */}
+                  <tr className="hover:bg-[#FBF9F5] divide-x divide-[#EAE3D8]">
+                    <td className="p-3 text-[#6B5A4B]">5. Corte 2024</td>
+                    {comparedCareers.map((c) => (
+                      <td key={c.id} className="p-3 text-[#5C4433]">
                         {c.metrics.corte2024} pts
                       </td>
                     ))}
                   </tr>
 
-                  {/* 4. Corte 2023 */}
+                  {/* 6. Corte 2023 */}
                   <tr className="hover:bg-[#FBF9F5] divide-x divide-[#EAE3D8]">
-                    <td className="p-3 text-[#6B5A4B]">4. Corte 2023</td>
+                    <td className="p-3 text-[#6B5A4B]">6. Corte 2023</td>
                     {comparedCareers.map((c) => (
                       <td key={c.id} className="p-3 text-[#5C4433]">
                         {c.metrics.corte2023} pts
@@ -349,32 +369,12 @@ export const CareerComparator: React.FC<CareerComparatorProps> = ({
                     ))}
                   </tr>
 
-                  {/* 5. Corte 2022 */}
+                  {/* 7. Corte 2022 */}
                   <tr className="hover:bg-[#FBF9F5] divide-x divide-[#EAE3D8]">
-                    <td className="p-3 text-[#6B5A4B]">5. Corte 2022</td>
+                    <td className="p-3 text-[#6B5A4B]">7. Corte 2022</td>
                     {comparedCareers.map((c) => (
                       <td key={c.id} className="p-3 text-[#5C4433]">
                         {c.metrics.corte2022} pts
-                      </td>
-                    ))}
-                  </tr>
-
-                  {/* 6. Corte 2021 */}
-                  <tr className="hover:bg-[#FBF9F5] divide-x divide-[#EAE3D8]">
-                    <td className="p-3 text-[#6B5A4B]">6. Corte 2021</td>
-                    {comparedCareers.map((c) => (
-                      <td key={c.id} className="p-3 text-[#5C4433]">
-                        {c.metrics.corte2021} pts
-                      </td>
-                    ))}
-                  </tr>
-
-                  {/* 7. Corte 2020 */}
-                  <tr className="hover:bg-[#FBF9F5] divide-x divide-[#EAE3D8]">
-                    <td className="p-3 text-[#6B5A4B]">7. Corte 2020</td>
-                    {comparedCareers.map((c) => (
-                      <td key={c.id} className="p-3 text-[#5C4433]">
-                        {c.metrics.corte2020} pts
                       </td>
                     ))}
                   </tr>

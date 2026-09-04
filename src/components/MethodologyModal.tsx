@@ -35,13 +35,13 @@ export const MethodologyModal: React.FC<MethodologyModalProps> = ({ onClose }) =
             </h3>
             <ul className="space-y-1.5 list-disc list-inside">
               <li>
-                <strong>DEMRE (Universidad de Chile):</strong> Tabla oficial de conversión NEM, ponderaciones oficiales de universidades adscritas al Sistema de Acceso Centralizado y series de puntajes de corte de últimos matriculados (2020 - 2024).
+                <strong>DEMRE (Universidad de Chile):</strong> Tabla oficial de conversión NEM, ponderaciones oficiales de universidades adscritas al Sistema de Acceso Centralizado y series de puntajes de corte de últimos matriculados (Admisión 2026 y series históricas 2022 - 2026).
               </li>
               <li>
-                <strong>MiFuturo.cl (Mineduc):</strong> Datos de empleabilidad al 1° y 2° año tras la titulación, ingresos brutos mensuales promedio y percentiles 10, 25, 50 (mediana), 75 y 90 cruzados con el Servicio de Impuestos Internos (SII).
+                <strong>MiFuturo.cl (Mineduc):</strong> Datos de empleabilidad al 1° y 2° año tras la titulación, ingresos brutos mensuales promedio e ingresos por percentiles (P10, P25, mediana P50, P75 y P90) específicos para cada carrera y cada casa de estudios superior, cruzados con el Servicio de Impuestos Internos (SII).
               </li>
               <li>
-                <strong>SIES (Servicio de Información de Educación Superior):</strong> Duración formal, duración real de titulación, sobreduración y retención de primer a segundo año.
+                <strong>SIES (Servicio de Información de Educación Superior):</strong> Duración formal, duración real de titulación, sobreduración y retención de primer a segundo año por carrera e institución.
               </li>
               <li>
                 <strong>CNA (Comisión Nacional de Acreditación):</strong> Años de acreditación institucional vigente y áreas certificadas.
